@@ -69,4 +69,4 @@ nice to have):
 
 ### Frustration
 
-Bascially: Did implementing the test programs make Ian angry?
+Basically: Did implementing the test programs make Ian angry?
