@@ -63,10 +63,104 @@ platform, but the link to the explanation from that note is broken.
 There's lots of that sort of stuff, and it generally takes a long time
 to find anything.
 
+There are lots of examples, which is definitely good, and there is
+documentation for each example on the Infocenter (for example, [this
+Bluetooth
+one](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v16.0.0/ble_sdk_app_hrc.html)
+or the [classic
+blinky](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v16.0.0/gpio_example.html)).
+The way the examples are set up is kind of annoying, as we'll see
+below, but they do serve as a good basis to start from. That's
+important, because I wouldn't want to try to start a project with the
+nRF5 SDK from a blank slate.
+
 
 # Example 1: Blinky (`example-1`)
 
-.../examples/peripheral/blinky/pca10056/blank/ses/blinky_pca10056.emProject
+If you look in the `examples/peripheral/blinky` directory of the nRF5
+SDK, you'll find the following:
+
+ - `hex`: a directory containing Intel hex files for the compiled
+   example for a number of platforms;
+ - `blinky.eww`: this is something to do with the Keil IDE, I think --
+   no idea why it's here at the top level of this example;
+ - `main.c`: the example code, 77 lines, of which only 16 are code;
+ - `pca10040`, `pca10040e`, `pca10056`, `pca10056e`, `pca10059`:
+   directories with configuration and build files for different
+   platforms.
+
+Those platform directories use the board IDs that Nordic uses to refer
+to the development kits. For our purposes, the only important ones are
+`pca10056` (the nRF52840 development kit) and `pca10059` (the nRF52840
+dongle). There are also sub-directories of these directories that
+refer for configurations with (`mbr`) and without (`blank`) a
+bootloader, but we'll not worry about that.
+
+Each of the platform directories includes a `config` directory (we'll
+come to that in a minute...) and a directory for each of the supported
+build systems (`ses` for SEGGER Embedded Studio, `iar` for IAR,
+`arm...` for Keil and `armgcc` for GCC). We'll just look at the `ses`
+directory here.
+
+In the `pca10056/ses` directory, there's a SES project file
+(`blinky_pca10056.emProject`), a SES session file
+(`blinky_pca10056.emSession`), and a memory layout file
+(`flash_placement.xml`), which is more or less equivalent to a GCC
+linker script.
+
+When you open that project file in SES, you see the following when you
+expand the project explorer:
+
+![SES blinky project files](pics/blinky-project-files.png)
+
+That doesn't look too bad: `main.c`, SDK configuration, some sort of
+board support file, some platform-specific startup code, a few library
+files.
+
+Let's say we want to take one of these examples and move it somewhere
+else to use as a basis for developing our own code. If I know that I'm
+going to be using SES and that I'm going to be working with an
+nRF52840 development kit, dongle and a custom board of my own, I don't
+want all of the stuff for all the other development platforms hanging
+around. I'd also like to sort things out so that I can just use a
+single bootloader/no-bootloader configuration for each board (for the
+development kit, it's usually no bootloader, for the dongle it's with
+a bootloader because that's the only option, with a custom board, it
+depends but it's likely to be one or the other). So I'd like to move
+the SES project files around a bit to make things nice.
+
+This is where things start to get a bit awkward. Here's what part of
+that project file looks like:
+
+```
+    <folder Name="nRF_Drivers">
+      <file file_name="../../../../../../modules/nrfx/soc/nrfx_atomic.c" />
+    </folder>
+    <folder Name="Application">
+      <file file_name="../../../main.c" />
+      <file file_name="../config/sdk_config.h" />
+    </folder>
+    <folder Name="None">
+      <file file_name="../../../../../../modules/nrfx/mdk/ses_startup_nrf52840.s" />
+      <file file_name="../../../../../../modules/nrfx/mdk/ses_startup_nrf_common.s" />
+      <file file_name="../../../../../../modules/nrfx/mdk/system_nrf52840.c" />
+    </folder>
+```
+
+It's reliant on the specific layout of the examples within the nRF5
+SDK installation, so you need to go in and manually edit all those
+paths to your liking. That `../../../../../../` part of all those
+paths is the relative path from the project file to the top-level of
+the nRF5 SDK installation. It would have been much more convenient if
+there had been a `NRF5_SDK` environment variable pointing there that
+could be used for all these paths. I did something equivalent to move
+these things around for convenience, which is to create a `nrf-sdk`
+symbolic link pointing to the top-level of the nRF5 SDK installation,
+so I can refer to all the files from there as `./nrf5-sdk/...`. If you
+don't do that, the only real option for setting up a standalone
+directory hierarchy for a project is to include the whole nRF5 SDK.
+That's kind of silly.
+
 
 # Example 2: PWM blinky
 
