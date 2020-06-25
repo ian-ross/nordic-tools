@@ -1,2 +1,4 @@
 /nrf5-sdk-ses/example-1/Output/
 /nrf5-sdk-ses/example-1/nrf5-sdk
+.venv
+.envrc
