@@ -1,3 +1,10 @@
+When I first started looking at CircuitPython, I thought it was going
+to be a bit of a toy. However, after a little playing with it, I'm
+seriously impressed. The people at Adafruit have done a huge amount of
+work to make things just work, and to make using Python on a
+microcontroller a breeze (even for relatively complicated things, like
+Bluetooth).
+
 # Installation
 
 ## Mu editor
@@ -217,13 +224,11 @@ comments. It's okay, and there are two series of "getting started"
 articles on the Adafruit website that are much better. Those things
 push the answer to this over to "yes".
 
-**Are there tutorials? Examples? Pictures? Performance data?**
+**Are there tutorials?**
 
 There are tutorials and examples. The tutorial matieral is all right,
 and the examples are useful. There are also a lot of projects on the
-Adafruit website, many of which contain interesting stuff. I've not
-found anything about performance, but I'm sure there must be stuff out
-there if you look.
+Adafruit website, many of which contain interesting stuff.
 
 ## Basic workflow
 

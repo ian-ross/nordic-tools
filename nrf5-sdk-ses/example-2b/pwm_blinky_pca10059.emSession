@@ -11,13 +11,13 @@
  <Memory3/>
  <Memory4/>
  <Project>
-  <ProjectSessionItem path="blinky_pca10059"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059;Application"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059;Board Definition"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059;None"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059;nRF_Drivers"/>
-  <ProjectSessionItem path="blinky_pca10059;blinky_pca10059;nRF_Libraries"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059;Application"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059;Board Definition"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059;None"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059;nRF_Drivers"/>
+  <ProjectSessionItem path="pwm_blinky_pca10059;pwm_blinky_pca10059;nRF_Libraries"/>
   <SourceCodeControlLogin password="F9BB6682F5D56822" user=""/>
  </Project>
  <Register1/>
@@ -48,5 +48,5 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="35" useTextEdit="1" openedFrom="/home/iross/projects/nordic-tools/nrf5-sdk-ses/example-1/nrf5-sdk/components/boards/boards.c" useBinaryEdit="0" left="0" path="nrf5-sdk/modules/nrfx/hal/nrf_gpio.h" selected="0" top="35" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="nrf5-sdk/components/libraries/balloc/nrf_balloc.c" selected="1" top="0" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="blinky_pca10059" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="pwm_blinky_pca10059" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

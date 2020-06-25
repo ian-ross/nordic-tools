@@ -25,7 +25,7 @@ categories = ["embedded"]
  - Is there any?
  - Is there enough?
  - Is it any good? (i.e. not just Doxygen...)
- - Are there tutorials? Examples? Pictures? Performance data?
+ - Are there tutorials?
 
 ### Basic workflow
 

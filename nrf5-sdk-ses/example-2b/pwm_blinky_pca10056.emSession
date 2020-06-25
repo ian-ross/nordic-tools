@@ -1,0 +1,49 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <ExecutionProfileWindow/>
+ <FrameBufferWindow>
+  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
+ </FrameBufferWindow>
+ <Memory1/>
+ <Memory2/>
+ <Memory3/>
+ <Memory4/>
+ <Project>
+  <ProjectSessionItem path="pwm_blinky_pca10056"/>
+  <ProjectSessionItem path="pwm_blinky_pca10056;pwm_blinky_pca10056"/>
+  <ProjectSessionItem path="pwm_blinky_pca10056;pwm_blinky_pca10056;Application"/>
+  <ProjectSessionItem path="pwm_blinky_pca10056;pwm_blinky_pca10056;nRF_Libraries"/>
+  <SourceCodeControlLogin password="F9BB6682F5D56822" user=""/>
+ </Project>
+ <Register1/>
+ <Register2/>
+ <Register3/>
+ <Register4/>
+ <Threads>
+  <ThreadsWindow showLists=""/>
+ </Threads>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Never"/>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="main.c" selected="1" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="64" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="nrf5-sdk/components/libraries/pwm/app_pwm.h" selected="0" top="54" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="43" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="nrf5-sdk/integration/nrfx/legacy/nrf_drv_timer.h" selected="0" top="23" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="nrf5-sdk/modules/nrfx/drivers/include/nrfx_timer.h" selected="0" top="51" codecName="Default"/>
+ </Files>
+ <ARMCrossStudioWindow activeProject="pwm_blinky_pca10056" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/big/project-storage/nordic-tools/nrf5-sdk-ses/nrf5-sdk/nrf5-sdk/components/libraries/pwm" debugSearchPath="" autoConnectCapabilities="3711"/>
+</session>
