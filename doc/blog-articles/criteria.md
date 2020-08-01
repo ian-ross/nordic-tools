@@ -6,6 +6,11 @@ categories = ["embedded"]
 
 # The judging criteria
 
+This is just a big old checklist to make sure that I apply at least
+half-way objective criteria for comparing the platforms. There's
+nothing scientific about it, but I think it covers most of the bases
+you'd want to cover with something like this.
+
 ### Installation
 
  - How easy is it to install the platform?
@@ -69,4 +74,4 @@ nice to have):
 
 ### Frustration
 
-Basically: Did implementing the test programs make Ian angry?
+Basically: Did implementing the example programs make Ian angry?
