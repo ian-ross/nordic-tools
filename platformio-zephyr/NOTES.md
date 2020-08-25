@@ -364,14 +364,60 @@ above and add some extra functionality. We want this to do the
 following:
 
 1. Replicate the PWM blinky behaviour from `example-3b`.
-2. Calculate and publish digits of &pi; via another Bluetooth
-   characteristic.
+2. Do some calculations and publish the results via another Bluetooth
+   characteristic. For the CircuitPython example I used calculating
+   digits of &pi; for this, but that's not so convenient in this case,
+   mostly because the Spigot algorithm for generating digits of &pi;
+   needs arbitrary precision integer arithmetic, and I don't want to
+   take the time to figure out how to cross-compile a suitable library
+   to support that. Instead I'll just write a simple thing to generate
+   some sort of synthetic signal.
 3. When a button is pushed on the nRF52840 dev kit, toggle the digit
    generation and publication, and flash the PWM LED a few times for
    feedback.
 
+This was relatively straightforward to do, starting from the
+`example-3b` code. I added a new GATT characteristic for the synthetic
+signal value, setting it up for live notifications, then I wrote a
+function to generate some synthetic signal values (just a
+superposition of a few sine waves). I ran the signal generator
+function in a separate thread (defined statically using Zephyr's
+`K_THREAD_DEFINE` macro).
 
+Once that was done, it took a little messing around to get live
+notifications working for the "signal" characteristic, but that was
+just because I didn't know the right way to do it. I needed to add an
+extra definition in the GATT profile for the PWM service to mark that
+the the signal characteristic should support notifications (what's
+called a "CCC" definition). Once that was in place, calling Zephyr's
+`bt_gatt_notify` function whenever the signal value changed nicely
+pushed updates out over Bluetooth connections.
 
+I then checked that the Bluetooth PWM duty cycle part of things still
+worked. Everything worked nicely, and it was possible to update the
+LED PWM duty cycle in parallel with the synthetic signal generation
+and publication.
+
+Then I set up a basic interrupt handler and callback for a button
+press of one of the buttons on the nRF52840 development board. This
+worked more or less first time, apart from a weird thing with the dev
+board where I could trigger the button press just by bringing my
+finger *near* to the button, without even touching it! I added some
+switch debouncing logic to make that less of a problem.
+
+The only thing remaining to do then was to write a little bit of code
+to do switch signal generation on and off when the button was pressed,
+and to replace the PWM LED output with a blinking indicator for a
+couple of seconds to give feedback that the signal generation state
+had changed. I did that using a separate thread, using a semaphore to
+wake the thread up from the button callback.
+
+This all worked super smoothly. The Zephyr thread APi isn't quite like
+Posix threads (or FreeRTOS for that matter), but it's easy to use and
+pretty obvious. I've been particularly impressed with how easy it's
+been to do Bluetooth stuff with Zephyr. The Zephyr Bluetooth API is
+very usable, it's easy to get going with it, but it still exposes all
+the details you might need to handle in more complex applications.
 
 
 # The judging criteria
@@ -451,42 +497,57 @@ lots of examples, so you do have somewhere to get started.
 
 **Is there editor syntax support?**
 
+There is. If you use VS Code, everything is already there for you. The
+PlatformIO website has information about using other editors and IDEs,
+but I didn't do more than take a very quick look at Emacs support, so
+I can't comment on that. (Emacs support for C and C++ programming is
+slightly complicated, so I didn't want to get into it for this
+project.)
+
 **Do you have to use a specific IDE or can you use tools you're
  already familiar with?**
 
+There is apparently support for other IDEs.
+
 **If you have to use a specific IDE, is it any good?**
+
+If I was going to switch from Emacs to an IDE, I would probably switch
+to VS Code. It's really pretty good. The integration of flash
+programming, debugging and serial monitor is pretty seamless.
 
 ### Compile
 
 **How easy is setting up paths to headers and libraries?**
 
+Oh, let us compare the ways that life is better with Zephyr than with
+the nRF5 SDK. You just don't need to do any of this stuff at all.
+Zephyr header files all live under a single `include/` directory, so
+there's no messing around with hundreds of include paths. It's
+blissfully simple.
+
 **What are compiler error messages like?**
 
-**Any extras (like warnings of potential power problems or things like
-that)?**
+It's GCC. They're good.
 
 ### Flash
 
-**Basically, does it work?**
+Basically, it just works.
 
 ### Debug
 
-**What's the source level debugging like?**
-
-**What are register and peripheral data views like?**
-
-**Do breakpoints, watchpoints, etc. work? (I don't use these things a
-   lot, but when you need them, you need them, so it's nice to know
-   that they're there.)**
+This all seems good. It just works. I assume that the VS Code debugger
+talks to GDB behind the scenes, and uses the SEGGER J-Link GDB server
+to talk to the nRF52840 dev board, but you don't see any of that. I
+don't know how you'd work out what was going on if something went
+wrong, because the details are all hidden, but when it works, it works!
 
 ## Fancy workflows
 
-**Command line builds: how easy are they to set up? are they possible
-at all?**
-
-**Testing: any special support?**
-
-**Continuous integration: any special support?**
+There's a command line setup for PlatformIO that you can use to do CI
+builds and similar things. I've not tried it, but it looks like it's
+possible. I'm not sure about any special setups for testing, but I
+think it ought to be easy enough to integrate things into PlatformIO
+builds.
 
 ## Functionality
 
@@ -494,26 +555,117 @@ at all?**
 
 **What device peripherals have driver libraries?**
 
+Quite a lot. Basically anything that is available on more than one
+platform has a driver abstraction in the Zephyr API (e.g. ADCs, DMA,
+PWM, Flash, serial interfaces, watchdogs, etc.). If you want to use
+something really weird, or use something in a very platform-specific
+way, you might need to break out of those APIs, but the coverage seems
+to be fairly comprehensive. (Now, I don't know how well all of those
+APIs are implemented for different platforms, but the intent to cover
+them all is definitely there.)
+
+A slightly more detailed investigation by looking through the
+devicetree definitions for the nRF52840 development board reveals some
+interesting things. (By the way, this is something that I think is one
+of Zephyr's killer features. Using the Linux devicetree system and
+Kconfig for an embedded OS is a brilliant solution. The devicetree
+files, in particular, are gold: you can see *exactly* what system
+peripherals are exposed at the OS level.)
+
+Anyway, if you do go exploring in Zephyr's `dts` directory, and look
+at `arm/nordic/nrf52840.dtsi`, you can see exactly which peripherals
+are exposed as devicetree nodes (and so are accessible from Zephyr
+programs without any extra effort). So what do you get? Bascially, all
+the "normal" stuff: flash, ADCs, clock, timers, GPIOs, I2C, PWM, SPI,
+RTC, timers, UART, USB, plus some more nRF52-specific things, like the
+random number generator, quadrature decoder, temperature sensor,
+watchdog, and the cryptocell. You also get access to the generic ARM
+stuff like the NVIC and SysTick timer.
+
+You *don't* get direct access to some of the more exotic things on the
+nRF52840, like the some of the components used for cryptography for
+networking (the Accelerated Address Resolver, for instance). However,
+some of those components are used directly in higher-level drivers (as
+memory-mapped peripherals, without exposing them via the devicetree).
+The AAR is used in the Bluetooth subsystem, for example, which means
+you more or less never need to think about it.
+
+It seems to me that there's actually a pretty good balance here,
+between peripherals and MCU subsystems that might be useful at an
+application level, and other subsystems that only make sense to use in
+the context of very specific contexts (like Bluetooth, for instance).
+For sure, you could dream up some weird way of using the AAR for
+another application if you wanted to, and if you were going to do
+that, you wouldn't be happy with Zephyr hiding it from your behind the
+Bluetooth driver. But if you're going to go as far off piste as that,
+you probably shouldn't be expecting a conventional RTOS to help you
+much anyway!
+
 **Are those libraries easy to use?**
+
+Given that I got all the stuff described above working by sticking
+things together from examples and searching through the documentation,
+I'd say it's not so hard to get it working.
 
 **Are there any options missing?**
 
+Of course. But mostly the restriction of options seems to be pretty
+sensible. You get direct access via Zephyr APIs to the things that it
+makes sense to use in application code, and the other stuff is used in
+the right way in the right context in device drivers, and isn't
+exposed via the devicetree.
+
 **If so, how easy is it to work around?**
+
+You can still use CMSIS or HAL libraries. In fact, a lot of the Zephyr
+subsystems are implemented using those things, so you can just pick
+them up out of the Zephyr source tree and knock yourself out.
 
 ### Configuration
 
 **How easy is it to use different libraries or drivers in your code?**
 
+Oh, so easy. You need to have the right Kconfig flags set in your
+`prj.conf`, and that's about it.
+
 **Are there any configuration or code generation tools to help with
 the setup?**
+
+This is about the only wart. Working with PlatformIO means you can't
+use Zephyr's Kconfig tools (the usual `make menuconfig` or `make
+guiconfig`) which hampers discoverability of configuration options.
+From reading around the PlatformIO issue tracker, I believe that this
+is in the works. Once you can fire off the Kconfig GUI from within
+PlatformIO, that will be pretty sweet. In the meantime, you need to
+edit the `prj.conf` file by hand, which is a little annoying, but not
+an insurmountable problem.
 
 ### Libraries
 
 **Are there higher-level libraries available for common functionality
  (e.g. communications, crypto, etc.)?**
 
+Lots and lots. Networking, audio, Bluetooth, crypto, data structures,
+file systems, threads and synchronisation, memory management, a
+command shell, abstractions for lots of peripheral types, plus lots
+more. Pretty much everything you'd need for most projects.
+
 **How easy is it to incorporate third-party code into your projects?**
+
+Yes. PlatformIO projects with Zephyr have a built-in mechanism for
+doing this.
 
 ### Frustration
 
 **Basically: Did implementing the test programs make Ian angry?**
+
+No, it was a total breeze. Zephyr is really rather good. There's a lot
+to learn, and I barely scratched the surface of what you can do with
+it here. I also took a fairly cargo cultish approach to writing some
+of the test programs here (especially the Bluetooth stuff), but it
+worked all the same. With a bit of study and some more understanding,
+Zephyr feels like it could be a seriously usable platform.
+
+The documentation does need some work, but I'm comparing it to the
+Linux kernel documentation, which probably isn't such a fair
+comparison!
