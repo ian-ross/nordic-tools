@@ -607,37 +607,13 @@ to include, getting all the header include paths right, and merging in
 the flags in the `sdk_config.h`.
 
 
-# Example 4: Thread + MQTT equivalent of BLE PWM blinky (`example-4`)
+# Example 4: something "Almost Realistic" (`example-4`)
 
-I ran out of steam here. I've done something like this for real work
-(using GCC + Makefiles instead of SES), and it was painful enough that
-I don't want to replicate the experience. I'm hoping that the examples
-covered above are enough to display how difficult it is to work with
-the nRF5 SDK.
-
-The nRF52840 does work with OpenThread, but getting it all set up is
-quite difficult -- there is a long list of libraries that has to be
-included to get all the crypto stuff working with the nRF52840's CC310
-crypto cell.
-
-I've also been using FreeRTOS, which is nominally supported as part of
-the nRF5 SDK (it's included as an external dependency in the
-download), but that requires some obscure extra incantations to make
-OpenThread work with it.
-
-All of this stuff *is* documented in various places, but it can be
-very difficult to find the information you need. Also, the nRF5 SDK
-includes a whole bag of different things (Nordic's own device drivers
-and libraries, external libraries like OpenThread and FreeRTOS, and so
-on), and although each individual component may have been tested in
-isolation, there's no guarantee that you can include any chosen
-mixture of these things into your application and have them work
-without some major headscratching.
-
-
-# Example 5: something "Almost Realistic" (`example-5`)
-
-Not going to do this one. See above!
+I ran out of steam here. I've previously done some more extensive
+things with the nRF5 SDK for real work (using GCC + Makefiles instead
+of SES), and it was painful enough that I don't want to replicate the
+experience. I'm hoping that the examples covered above are enough to
+display how difficult it is to work with the nRF5 SDK.
 
 
 # The judging criteria

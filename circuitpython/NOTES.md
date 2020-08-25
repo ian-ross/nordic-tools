@@ -123,19 +123,7 @@ PWM = 100% is off.)
 
 Skipping this one because it's too easy.
 
-# Example 4: Thread + MQTT equivalent of BLE PWM blinky
-
-Oops. Thread isn't supported (latest discussion I found is here:
-https://github.com/adafruit/circuitpython/issues/1162).
-
-There is a CircuitPython MQTT library called MiniMQTT
-(https://circuitpython.readthedocs.io/projects/minimqtt/en/latest/#)
-but it relies on an underlying TCP transport. Without Thread support,
-that's a non-starter on the nRF52840 (other boards supported by
-CircuitPython have Wi-Fi capability, so MiniMQTT makes sense in that
-context).
-
-# Example 5: something "Almost Realistic" (`example-5.py`)
+# Example 4: something "Almost Realistic" (`example-4.py`)
 
 The problem here is that CircuitPython doesn't support any kind of
 RTOS functionality in the Python code that you right. Modules
@@ -160,7 +148,7 @@ nRF52840, which is not a simple thing to do, especially if you want to
 be receptive to BLE messages while you're sleeping:
 https://github.com/adafruit/circuitpython/issues/696).
 
-This is done in the `example-5.py` code, just to show how it works.
+This is done in the `example-4.py` code, just to show how it works.
 It's pretty simple, but it's not really what this example is supposed
 to be demonstrating!
 
