@@ -1,3 +1,10 @@
++++
+title = "sky blue trades | Nordic Tools Comparison: PlatformIO + Zephyr"
+template = "project_page.html"
++++
+
+# PlatformIO + Zephyr
+
 Here, I'm going to try all this stuff using PlatformIO + Zephyr.
 Fortunately, [Valerii Koval](https://github.com/valeros) already wrote
 a tutorial about using Bluetooth on the nRF52840 in this setup, which
@@ -43,7 +50,7 @@ platforms that it supports is Zephyr.
 Sounds good. Let's give it a whirl!
 
 
-# Installation
+## Installation
 
 PlatformIO comes in two parts, a command line interface and an IDE.
 For most applications, you only need to install the IDE part, because
@@ -88,7 +95,7 @@ libraries (including OpenThread). For what's there, it doesn't seem
 like too much.
 
 
-# Documentation
+## Documentation
 
 There's a lot of documentation, though it's quite hard to assess how
 much there is and how useful it is because it's quite naturally split
@@ -113,7 +120,9 @@ framework as downloaded by PlatformIO is about 1.5M lines of code
 use with Zephyr, like OpenThread, LVGL, mbedtls, and so on.
 
 
-# Example 1: Blinky (`example-1`)
+## Example 1: Blinky (`example-1`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-1)
 
 One of the things that ends up being downloaded with the nRF52840
 development kit BSP is some examples. You can find a Zephyr-based
@@ -139,9 +148,11 @@ It just works, with no messing around required at all. Fantastic
 stuff!
 
 
-# Example 2: PWM blinky
+## Example 2: PWM blinky
 
-## Pre-defined example (`example-2a`)
+### Pre-defined example (`example-2a`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-2a)
 
 There is a pre-defined PWM blinky example in the Zephyr distribution,
 which can be found in
@@ -185,7 +196,9 @@ that should be set up by default.
 
 Anyway, after a bit of hassle there was some PWM action going on.
 
-## Add PWM to basic blinky (`example-2b`)
+### Add PWM to basic blinky (`example-2b`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-2b)
 
 Next thing is to make a copy of the basic blinky and try to make it
 into a PWM blinky.
@@ -243,7 +256,7 @@ what the other PWM channels are used for, or if there's any way to
 access them from within Zephyr.
 
 In any case, the code changes to make the blinky into a "soft fade"
-PWM blinky are pretty easy. The PWM blinky example from the Zephyr
+PWM blinky are fairly easy. The PWM blinky example from the Zephyr
 distribution uses a function called `pwm_pin_set_usec` to set the PWM
 duty cycle, but there's also `pwm_pin_set_nsec` that takes the PWM
 period and on-time in nanoseconds, so it was possible to set up a 40
@@ -257,11 +270,13 @@ down to unfamiliarity with the platform, the tools, the IDE, the
 everything. Score one to Zephyr!
 
 
-# Example 3: BLE-controlled PWM blinky
+## Example 3: BLE-controlled PWM blinky
 
-So, PWM is pretty basic. Let's see if we can do some Bluetooth.
+So, PWM is basic stuff. Let's see if we can do some Bluetooth.
 
-## Pre-defined BLE example (`example-3a`)
+### Pre-defined BLE example (`example-3a`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-3a)
 
 Let's give an environmental sensing example from the Zephyr
 distribution a try. It's in `samples/bluetooth/peripheral_esp`.
@@ -287,7 +302,9 @@ Bluetooth-level entities, and you don't need to worry about dealing
 with the Nordic "SoftDevice" Bluetooth drivers at all. It's nice.
 
 
-## BLE PWM blinky (`example-3b`)
+### BLE PWM blinky (`example-3b`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-3b)
 
 One problem here was that the Bluetooth example I used as `example-3a`
 is for an environmental sensing service, not a UART service. The
@@ -312,15 +329,15 @@ This effort was made a little more difficult by two factors:
 
 2. The Zephyr documentation for their Bluetooth library isn't all that
    good. This is kind of the flip side of the wide support for a lot
-   of complex subsystems within Zephyr. It's already a pretty huge
-   effort to get something like Zephyr going. To document everything
-   in detail multiplies that effort by a non-trivial factor. That
-   means that some areas just have sparse Doxygen-like documentation.
-   The Bluetooth library has a set of macros for setting up GATT
-   profiles, and it would have been useful to have some sort of
-   tutorial documentation for how to use them. Instead I "guessed and
-   messed", based on the example code I found in the Zephyr install.
-   (At least there's a fair amount of example code!)
+   of complex subsystems within Zephyr. It's already a huge effort to
+   get something like Zephyr going. To document everything in detail
+   multiplies that effort by a non-trivial factor. That means that
+   some areas just have sparse Doxygen-like documentation. The
+   Bluetooth library has a set of macros for setting up GATT profiles,
+   and it would have been useful to have some sort of tutorial
+   documentation for how to use them. Instead I "guessed and messed",
+   based on the example code I found in the Zephyr install. (At least
+   there's a fair amount of example code!)
 
 Point #1 here obviously neutralises any serious complaining I could do
 about point #2! I've not reviewed all of the Zephyr documentation, but
@@ -357,7 +374,9 @@ incorporate the PWM blinky side of things to get a working
 application. That was really smooth.
 
 
-# Example 4: something "Almost Realistic" (`example-4`)
+## Example 4: something "Almost Realistic" (`example-4`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/platformio-zephyr/example-4)
 
 Here, we're going to start from the Bluetooth PWM blinky example from
 above and add some extra functionality. We want this to do the
@@ -412,17 +431,17 @@ couple of seconds to give feedback that the signal generation state
 had changed. I did that using a separate thread, using a semaphore to
 wake the thread up from the button callback.
 
-This all worked super smoothly. The Zephyr thread APi isn't quite like
+This all worked super smoothly. The Zephyr thread API isn't quite like
 Posix threads (or FreeRTOS for that matter), but it's easy to use and
-pretty obvious. I've been particularly impressed with how easy it's
-been to do Bluetooth stuff with Zephyr. The Zephyr Bluetooth API is
-very usable, it's easy to get going with it, but it still exposes all
-the details you might need to handle in more complex applications.
+relatively obvious. I've been particularly impressed with how easy
+it's been to do Bluetooth stuff with Zephyr. The Zephyr Bluetooth API
+is very usable, it's easy to get going with it, but it still exposes
+all the details you might need to handle in more complex applications.
 
 
-# The judging criteria
+## The judging criteria
 
-## Installation
+### Installation
 
 **How easy is it to install the platform?**
 
@@ -454,7 +473,7 @@ cross-compiler toolchain works, you should be golden.
 
 Yes. PlatformIO is free and open-source, as is Zephyr.
 
-## Quick start
+### Quick start
 
 **How long is "Zero To Blinky"?**
 
@@ -471,7 +490,7 @@ you have to make special effort are the places where Zephyr support is
 still thin, or where the documentation is lacking. I'm sure those will
 get better with time.
 
-## Documentation
+### Documentation
 
 **Is there any?**
 
@@ -489,11 +508,9 @@ A lot of it is unfortunately just Doxygen documentation, often with
 nothing to connect the Doxygen pages at all. Fortunately there are
 lots of examples, so you do have somewhere to get started.
 
-**Are there tutorials? Examples? Pictures? Performance data?**
+### Basic workflow
 
-## Basic workflow
-
-### Edit
+#### Edit
 
 **Is there editor syntax support?**
 
@@ -513,9 +530,9 @@ There is apparently support for other IDEs.
 
 If I was going to switch from Emacs to an IDE, I would probably switch
 to VS Code. It's really pretty good. The integration of flash
-programming, debugging and serial monitor is pretty seamless.
+programming, debugging and serial monitor is seamless.
 
-### Compile
+#### Compile
 
 **How easy is setting up paths to headers and libraries?**
 
@@ -529,11 +546,11 @@ blissfully simple.
 
 It's GCC. They're good.
 
-### Flash
+#### Flash
 
 Basically, it just works.
 
-### Debug
+#### Debug
 
 This all seems good. It just works. I assume that the VS Code debugger
 talks to GDB behind the scenes, and uses the SEGGER J-Link GDB server
@@ -541,7 +558,7 @@ to talk to the nRF52840 dev board, but you don't see any of that. I
 don't know how you'd work out what was going on if something went
 wrong, because the details are all hidden, but when it works, it works!
 
-## Fancy workflows
+### Fancy workflows
 
 There's a command line setup for PlatformIO that you can use to do CI
 builds and similar things. I've not tried it, but it looks like it's
@@ -549,9 +566,9 @@ possible. I'm not sure about any special setups for testing, but I
 think it ought to be easy enough to integrate things into PlatformIO
 builds.
 
-## Functionality
+### Functionality
 
-### Coverage of device functionality
+#### Coverage of device functionality
 
 **What device peripherals have driver libraries?**
 
@@ -590,16 +607,16 @@ memory-mapped peripherals, without exposing them via the devicetree).
 The AAR is used in the Bluetooth subsystem, for example, which means
 you more or less never need to think about it.
 
-It seems to me that there's actually a pretty good balance here,
-between peripherals and MCU subsystems that might be useful at an
-application level, and other subsystems that only make sense to use in
-the context of very specific contexts (like Bluetooth, for instance).
-For sure, you could dream up some weird way of using the AAR for
-another application if you wanted to, and if you were going to do
-that, you wouldn't be happy with Zephyr hiding it from your behind the
-Bluetooth driver. But if you're going to go as far off piste as that,
-you probably shouldn't be expecting a conventional RTOS to help you
-much anyway!
+It seems to me that there's actually a good balance here, between
+peripherals and MCU subsystems that might be useful at an application
+level, and other subsystems that only make sense to use in the context
+of very specific contexts (like Bluetooth, for instance). For sure,
+you could dream up some weird way of using the AAR for another
+application if you wanted to, and if you were going to do that, you
+wouldn't be happy with Zephyr hiding it from your behind the Bluetooth
+driver. But if you're going to go as far off piste as that, you
+probably shouldn't be expecting a conventional RTOS to help you much
+anyway!
 
 **Are those libraries easy to use?**
 
@@ -609,11 +626,11 @@ I'd say it's not so hard to get it working.
 
 **Are there any options missing?**
 
-Of course. But mostly the restriction of options seems to be pretty
-sensible. You get direct access via Zephyr APIs to the things that it
-makes sense to use in application code, and the other stuff is used in
-the right way in the right context in device drivers, and isn't
-exposed via the devicetree.
+Of course. But mostly the restriction of options seems to be sensible.
+You get direct access via Zephyr APIs to the things that it makes
+sense to use in application code, and the other stuff is used in the
+right way in the right context in device drivers, and isn't exposed
+via the devicetree.
 
 **If so, how easy is it to work around?**
 
@@ -621,7 +638,7 @@ You can still use CMSIS or HAL libraries. In fact, a lot of the Zephyr
 subsystems are implemented using those things, so you can just pick
 them up out of the Zephyr source tree and knock yourself out.
 
-### Configuration
+#### Configuration
 
 **How easy is it to use different libraries or drivers in your code?**
 
@@ -636,11 +653,11 @@ use Zephyr's Kconfig tools (the usual `make menuconfig` or `make
 guiconfig`) which hampers discoverability of configuration options.
 From reading around the PlatformIO issue tracker, I believe that this
 is in the works. Once you can fire off the Kconfig GUI from within
-PlatformIO, that will be pretty sweet. In the meantime, you need to
-edit the `prj.conf` file by hand, which is a little annoying, but not
-an insurmountable problem.
+PlatformIO, that will be sweet. In the meantime, you need to edit the
+`prj.conf` file by hand, which is a little annoying, but not an
+insurmountable problem.
 
-### Libraries
+#### Libraries
 
 **Are there higher-level libraries available for common functionality
  (e.g. communications, crypto, etc.)?**

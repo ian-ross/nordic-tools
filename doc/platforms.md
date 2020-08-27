@@ -1,7 +1,6 @@
 +++
-title = "The Platforms"
-[taxonomies]
-categories = ["embedded"]
+title = "sky blue trades | Nordic Tools Comparison: The Platforms"
+template = "project_page.html"
 +++
 
 # Platforms

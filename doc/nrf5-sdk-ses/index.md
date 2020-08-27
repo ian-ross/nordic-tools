@@ -1,3 +1,10 @@
++++
+title = "sky blue trades | Nordic Tools Comparison: SEGGER Embedded Studio + nRF5 SDK"
+template = "project_page.html"
++++
+
+# SEGGER Embedded Studio + nRF5 SDK
+
 This is long, and some of it is going to sound like a rant. I don't
 want to be down on Nordic about this, but the nRF5 SDK is really hard
 to use in a productive way. The SDK code itself isn't the problem,
@@ -5,7 +12,7 @@ it's the configuration system for including the right SDK files and
 setting the relevant configuration options. Or rather the lack of a
 coherent system for doing that...
 
-# Installation
+## Installation
 
 If you start at the [main nRF52840
 page](https://www.nordicsemi.com/Products/Low-power-short-range-wireless/nRF52840)
@@ -22,7 +29,7 @@ https://www.segger.com/products/development-tools/embedded-studio/license/licens
 During installation it's not immediately obvious that this kind of
 licensing applies, but it's there on their website.
 
-## IDE (SEGGER Embedded Studio)
+### IDE (SEGGER Embedded Studio)
 
 From the [SES downloads
  page](https://www.segger.com/downloads/embedded-studio/) you can
@@ -56,7 +63,7 @@ later, if my motivation survives to those later examples
 The SoftDevice + nRF5 SDK download unpacks to about 750 Mb.
 
 
-# Documentation
+## Documentation
 
 All of Nordic's developer documentation is on a slightly old-fashioned
 looking website they call their Infocenter. It's not terrible, but
@@ -83,7 +90,9 @@ important, because I wouldn't want to try to start a project with the
 nRF5 SDK from a blank slate.
 
 
-# Example 1: Blinky (`example-1`)
+## Example 1: Blinky (`example-1`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/tree/main/nrf5-sdk-ses/example-1)
 
 If you look in the `examples/peripheral/blinky` directory of the nRF5
 SDK, you'll find the following:
@@ -120,7 +129,7 @@ linker script.
 When you open that project file in SES, you see the following when you
 expand the project explorer:
 
-![SES blinky project files](pics/blinky-project-files.png)
+![SES blinky project files](blinky-project-files.png)
 
 That doesn't look too bad: `main.c`, SDK configuration, some sort of
 board support file, some platform-specific startup code, a few library
@@ -141,7 +150,7 @@ hadn't set a breakpoint, but I need to investigate that with GDB later
 on to see what's up there. (When I use a debugger, I almost always use
 GDB...)
 
-## Reorganising example build setup
+### Reorganising example build setup
 
 Let's say we want to take this blinky example and move it somewhere
 else to use as a basis for developing our own code. If I know that I'm
@@ -211,7 +220,7 @@ the project files:
 
 Everything builds fine for both platforms now.
 
-## The `sdk_config.h` file
+### The `sdk_config.h` file
 
 That was slightly annoying, but now we get to what I think of as "the
 bad bit". Those `sdk_config.h` files? They're each about 3000 lines.
@@ -252,9 +261,9 @@ This quickly gets infuriating, as we'll see in a minute when we try to
 add PWM functionality to our blinky.
 
 
-# Example 2: PWM blinky
+## Example 2: PWM blinky
 
-## Pre-defined example (`example-2a`)
+### Pre-defined example (`example-2a`)
 
 Taking a look in the `examples` directory in the nRF5 SDK, there are
 two PWM examples, one called `pwm_driver` and one called
@@ -276,7 +285,9 @@ it all sounds pretty simple. There's also a short [documentation
 page](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v16.0.0/pwm_example.html)
 about the example itself.
 
-## Add PWM to basic blinky (`example-2b`)
+### Add PWM to basic blinky (`example-2b`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/tree/main/nrf5-sdk-ses/example-2b)
 
 Now we're going to try something that I consider to be a sort of
 minimal test of how usable a platform is: we're going to take the
@@ -453,9 +464,9 @@ a single library to use a simple peripheral. Let's see how much more
 fun it could be to add Bluetooth, shall we?
 
 
-# Example 3: BLE-controlled PWM blinky
+## Example 3: BLE-controlled PWM blinky
 
-## Pre-defined BLE example (`example-3a`)
+### Pre-defined BLE example (`example-3a`)
 
 The closest pre-defined Bluetooth example to what we want is probably
 the UART peripheral example, found in
@@ -471,29 +482,24 @@ SDK, just to avoid having to fix all the paths up for moving it to an
 Building this example works fine, flashing it works fine, and
 following the [instructions in the example
 documentation](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v16.0.0/ble_sdk_app_nus_eval.html)
-partially works. I can connect the Nordic nRF Connect Android
-application to the Bluetooth endpoint, and I can send data over the
-PC's USB serial connection (using Minicom), and it gets sent out over
-Bluetooth and can be picked up in nRF Connect. What I can't for the
-life of me figure out is how to send data the other way. Just doesn't
-seem to work. Same goes for the nRF UART Android application -- data
-transmission from the dev kit to the phone app works fine, but the
-other direction doesn't work.
-
-Don't you love it when the examples don't work? Am I doing something
-wrong? No idea yet.
-
-Balls. Switched to a different test device (a Motorola Moto G instead
-of a Samsumg tablet), and everything worked fine. Don't know what's
-wrong with the BLE setup on the tablet, but it wasted a nice couple of
-hours as I tried to track down what was going on...
+works. I can connect the Nordic nRF Connect Android application to the
+Bluetooth endpoint, I can send data over the PC's USB serial
+connection (using Minicom), and it gets sent out over Bluetooth and
+can be picked up in nRF Connect, and I can receive data from the
+nRF52840 in the nRF Connect app. The nRF UART Android application also
+works. (This is a tiny lie, because I wasted a couple of hours with
+things only working in one direction because of some weird Bluetooth
+thing on the first Android device I used. After switching to a
+different Android device, everything worked.)
 
 Anyway, that means the BLE UART example works fine, so we can use it
 as a basis for figuring out how to add BLE action to our PWM blinky
 code.
 
 
-## Add BLE to PWM blinky (`example-3b`)
+### Add BLE to PWM blinky (`example-3b`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/tree/main/nrf5-sdk-ses/example-3b)
 
 Let's copy the PWM blinky `example-2b` and BLEify it. What do we want
 to do here? Basically, just accept incoming UART data, parse it as a
@@ -596,7 +602,7 @@ example. The key pain points here are:
 There is no automated help for any of these three.
 
 
-## Add PWM blinky to BLE example (`example-3c`)
+### Add PWM blinky to BLE example (`example-3c`)
 
 I'm not going to do this one, since it's more or less a mirror image
 of `example-3b`, except probably a bit easier, since we would be
@@ -607,7 +613,7 @@ to include, getting all the header include paths right, and merging in
 the flags in the `sdk_config.h`.
 
 
-# Example 4: something "Almost Realistic" (`example-4`)
+## Example 4: something "Almost Realistic" (`example-4`)
 
 I ran out of steam here. I've previously done some more extensive
 things with the nRF5 SDK for real work (using GCC + Makefiles instead
@@ -616,9 +622,9 @@ experience. I'm hoping that the examples covered above are enough to
 display how difficult it is to work with the nRF5 SDK.
 
 
-# The judging criteria
+## The judging criteria
 
-## Installation
+### Installation
 
 **How easy is it to install the platform?**
 
@@ -664,7 +670,7 @@ our nRF series of wireless SoCs without any additional charges." I
 don't know if that's in perpetuity or if there any other conditions.
 
 
-## Quick start
+### Quick start
 
 **How long is "Zero To Blinky"?**
 
@@ -703,7 +709,7 @@ spending quite a bit of time on it). Once you move away from the
 examples though, you're in more dangerous territory.
 
 
-## Documentation
+### Documentation
 
 **Is there any?**
 
@@ -743,9 +749,9 @@ but it's very much the sort of thing you stumble across, and think
 organised in any coherent way.
 
 
-## Basic workflow
+### Basic workflow
 
-### Edit
+#### Edit
 
 **Is there editor syntax support?**
 
@@ -778,7 +784,7 @@ exclusively in Emacs, just because using the IDE GUI was painful, and
 ended up putting absolute paths everywhere. There might be an option
 to fix that somewhere, but it seems like a really bad default option.
 
-### Compile
+#### Compile
 
 **How easy is setting up paths to headers and libraries?**
 
@@ -800,7 +806,7 @@ Studio](https://www.ti.com/tool/CCSTUDIO-MSP) tools for their MSP430
 processors. (Which incidentally, is built on Eclipse, showing that it
 can easily be done.)
 
-### Flash
+#### Flash
 
 **Basically, does it work?**
 
@@ -811,17 +817,13 @@ programmer via SES (you need to get the SEGGER J-Link software set up
 right for this to work), or you can use Nordic's `nrfjprog` command
 line tool (also relies on J-Link).
 
-### Debug
+#### Debug
 
-**What's the source level debugging like?**
+I didn't really do much with this. It relies on J-Link, which usually
+just works, so I have no reason to think that there would be problems
+here.
 
-**What are register and peripheral data views like?**
-
-**Do breakpoints, watchpoints, etc. work? (I don't use these things a
-   lot, but when you need them, you need them, so it's nice to know
-   that they're there.)**
-
-## Fancy workflows
+### Fancy workflows
 
 **Command line builds: how easy are they to set up? are they possible
 at all?**
@@ -848,9 +850,9 @@ AWS EC2 or somewhere, do you need to get a license for that virtual
 machine? Not obvious how that works.)
 
 
-## Functionality
+### Functionality
 
-### Coverage of device functionality
+#### Coverage of device functionality
 
 **What device peripherals have driver libraries?**
 
@@ -867,7 +869,7 @@ issue is the difficulty of configuring builds against the SDK.
 
 Not that I've found.
 
-### Configuration
+#### Configuration
 
 **How easy is it to use different libraries or drivers in your code?**
 
@@ -891,7 +893,7 @@ that you need for a new set of functionality. You need to find a
 suitable existing configuration file and cut and paste. It's really
 bad.
 
-### Libraries
+#### Libraries
 
 **Are there higher-level libraries available for common functionality
  (e.g. communications, crypto, etc.)?**

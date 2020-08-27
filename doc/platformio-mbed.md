@@ -1,4 +1,9 @@
-# Installation
++++
+title = "sky blue trades | Nordic Tools Comparison: PlatformIO + ARM mbed"
+template = "project_page.html"
++++
+
+# PlatformIO + ARM mbed
 
 This was a total failure.
 
@@ -16,8 +21,8 @@ long process of compiling every *single* source file in the mbed
 distribution) and claimed to download to the nRF52840 development
 board. But it didn't run. And debugging didn't reveal anything
 obvious, apart from the fact that the code seemed to hang in a line
-that said "`led1 = !led1;`", with `led1` being a C++ objects referring
-abstracting one of the LEDs on the nRF52840 development board.
+that said "`led1 = !led1;`", with `led1` being a C++ object referring
+to one of the LEDs on the nRF52840 development board.
 
 And there we come to one of the problems of these highly integrated
 systems. If I'd been using GCC + OpenOCD + GDB and something didn't

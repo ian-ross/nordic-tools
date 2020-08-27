@@ -1,7 +1,6 @@
 +++
-title = "The Examples"
-[taxonomies]
-categories = ["embedded"]
+title = "sky blue trades | Nordic Tools Comparison: The Examples"
+template = "project_page.html"
 +++
 
 # The example programs

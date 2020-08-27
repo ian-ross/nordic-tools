@@ -1,7 +1,6 @@
 +++
-title = "The Judging Criteria"
-[taxonomies]
-categories = ["embedded"]
+title = "sky blue trades | Nordic Tools Comparison: The Judging Criteria"
+template = "project_page.html"
 +++
 
 # The judging criteria
@@ -9,9 +8,12 @@ categories = ["embedded"]
 This is just a big old checklist to make sure that I apply at least
 half-way objective criteria for comparing the platforms. There's
 nothing scientific about it, but I think it covers most of the bases
-you'd want to cover with something like this.
+you'd want to cover with something like this. I wasn't too fastidious
+about following this to the letter. If something wasn't really
+relevant for a platform (or if I finding out the information would be
+too onerous), I just skipped it.
 
-### Installation
+## Installation
 
  - How easy is it to install the platform?
  - Is the download ridiculously large? How much disk space do you
@@ -19,20 +21,20 @@ you'd want to cover with something like this.
  - Does it work on Linux? Windows? MacOS? Any weird restrictions?
  - Is it free?
 
-### Quick start
+## Quick start
 
  - How long is "Zero To Blinky"?
  - Are there enough examples?
  - Does stuff just work?
 
-### Documentation
+## Documentation
 
  - Is there any?
  - Is there enough?
  - Is it any good? (i.e. not just Doxygen...)
  - Are there tutorials?
 
-### Basic workflow
+## Basic workflow
 
 The stuff you do every day:
 
@@ -48,7 +50,7 @@ The stuff you do every day:
    work? (I don't use these things a lot, but when you need them, you
    need them, so it's nice to know that they're there.)
 
-### Fancy workflows
+## Fancy workflows
 
 Stuff you might not do every day, but that you might want to (testing
 and CI you can set up yourself as long as you can do command line
@@ -60,7 +62,7 @@ nice to have):
  - Testing: any special support?
  - Continuous integration: any special support?
 
-### Functionality
+## Functionality
 
  - Coverage of device functionality: what device peripherals have
    driver libraries? are those libraries easy to use? are there any
@@ -72,6 +74,6 @@ nice to have):
    functionality (e.g. communications, crypto, etc.)? how easy is it
    to incorporate third-party code into your projects?
 
-### Frustration
+## Frustration
 
 Basically: Did implementing the example programs make Ian angry?

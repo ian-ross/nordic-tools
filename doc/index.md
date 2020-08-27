@@ -1,14 +1,13 @@
 +++
-title = "Nordic Semiconductor nRF52840 Tools Comparison"
-[taxonomies]
-categories = ["embedded"]
+title = "sky blue trades | Nordic Semiconductor nRF52840 Tools Comparison"
+template = "project_top_level.html"
 +++
 
 # Nordic Semiconductor nRF52840 Tools Comparison
 
 **Warning: this needs a massive TL;DR warning. It got really out of
 hand. Unless you're a true glutton for punishment, you probably want
-to skip right to the [SUMMARY](summary.md).**
+to skip straight to the [SUMMARY](summary).**
 
 I've been doing some work using the [Nordic Semiconductor nRF52840
 chip][nrf52840] recently. It's a nice ARM Cortex-M4F SoC with a 2.4
@@ -47,7 +46,7 @@ platform"), and to compare them for usability on the nRF52840 by
 developing a small set of example programs. I came up with some more
 or less objective criteria to judge these things on.
 
- - [Example programs](examples.md): I chose a small series of example
+ - [Example programs](examples): I chose a small series of example
    programs to implement on each platform, increasing in complexity
    from "Blinky" to something involving Bluetooth, some GPIO stuff,
    some timers and an RTOS. These aim to be realistic without being
@@ -58,12 +57,15 @@ or less objective criteria to judge these things on.
    really hurts you, and it's one of the biggest pain points I had
    with the SDK that Nordic recommends.
 
- - [Platforms](platforms.md): I picked a few different development
+ - [Platforms](platforms): I picked a few different development
    environments and SDKs to test, based on what I'd already been
    using, a few things I'd seen that looked interesting, a couple of
-   suggestions from Chris Gammell, and one total ringer (Rust).
+   suggestions from Chris Gammell, and one total ringer to be dealt
+   with at some future date (Rust: probably not practical for "normal"
+   development yet, but I'm interested to see what you can do with
+   it).
 
- - [Assessment criteria](criteria.md): This is more or less just a
+ - [Assessment criteria](criteria): This is more or less just a
    checklist of things to think about. Is the platform easy to
    install? Are there examples? Is there documentation? Is it any
    good? Is it easy to build and flash the example code? How easy is
@@ -80,27 +82,32 @@ platform was giving me a really hard time, I just bailed early from
 the series of example programs. If it takes superhuman efforts to make
 an LED blink, it's probably not going to be a bundle of fun getting
 something with Bluetooth and an RTOS going, and it's going to be even
-less fun using the thing for real work.
+less fun using the thing for real work. I also didn't take too much
+care over code quality. Most of the example programs are cut-and-paste
+cargo cult programming, done in a slapdash kind of way just to see how
+easy it is to get things working. If you can get stuff going in this
+casual way, then things are likely to be pretty good when you spend a
+bit more time and care.
 
 # The evaluations
 
 Some of these are really long. None of this is particularly simple,
 and there are lots of things to look at, so that's unavoidable, but
 does make these things kind of boring. Seriously, the
-[summary](summary.md) is pretty great. Short and sweet. Smooth and
+[summary](summary) is pretty great. Short and sweet. Smooth and
 succinct. I won't be offended if you skip right there!
 
  - [SEGGER Embedded Studio + nRF5 SDK](nrf5-sdk-ses) (recommended by Nordic)
- - [GCC + Makefiles](gcc-makefiles)
+ - [GCC + Makefiles + nRF5 SDK (and similar)](gcc-makefiles)
  - [PlatformIO + Zephyr](platformio-zephyr)
- - [ARM mbed](arm-mbed)
+ - [PlatformIO + ARM mbed](platformio-mbed)
  - [CircuitPython](circuitpython)
- - [Rust + RTFM + various...](rust)
+ - Rust + RTFM + various... (TBD)
 
 # The summary
 
-[Conclusions and summary on a separate page](summary.md) so I can
-point people at it without making them read all this stuff...
+[Conclusions and summary on a separate page](summary) so I can point
+people at it without making them read all this stuff...
 
 [nrf52840]: https://www.nordicsemi.com/Products/Low-power-short-range-wireless/nRF52840
 [mqtt]: http://mqtt.org/

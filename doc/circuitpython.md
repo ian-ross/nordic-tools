@@ -1,3 +1,10 @@
++++
+title = "sky blue trades | Nordic Tools Comparison: CircuitPython"
+template = "project_page.html"
++++
+
+# CircuitPython
+
 When I first started looking at CircuitPython, I thought it was going
 to be a bit of a toy. However, after a little playing with it, I'm
 seriously impressed. The people at Adafruit have done a huge amount of
@@ -5,37 +12,42 @@ work to make things just work, and to make using Python on a
 microcontroller a breeze (even for relatively complicated things, like
 Bluetooth).
 
-# Installation
+## Installation
 
-## Mu editor
+### Mu editor
 
- - Doesn't work with Python 3.8...
- - So need to install Python 3.7 alongside 3.8.
- - Make a Python 3.7 virtual environment with `python3.7 -m venv
-   ./.venv` and activate it (I used my usual stuff from the
-   `make-virtual-env` script).
- - Upgrade PIP in the virtual environment: `pip install --upgrade
-   pip`.
- - Install Mu: `pip install mu-editor`.
+This is the recommended editor for working with CircuitPython, and I
+set it up just out of interest. There were a couple of installation
+wrinkles...
 
-## Installing CircuitPython for nRF52840 dongle and dev kit
+First, it doesn't work with Python 3.8, so I needed to install Python
+3.7 alongside 3.8. Then I made a Python 3.7 virtual environment with
+`python3.7 -m venv ./.venv` and activated it to make sure things got
+installed in the right place.
 
- - Download `.bin` install files.
- - Need to follow the "non-UF2" installation route.
- - Documentation is a bit lacking there...
- - Converting the `.bin` file to an Intel hex file (using `bin2hex.py`
-   from `python-intelhex`) and flashing it with nRF Connect doesn't
-   seem to work. The device doesn't appear as a USB drive as it's
-   supposed to.
- - Let's try the dev kit instead of the dongle.
- - Here's a promising looking page:
-   https://learn.adafruit.com/circuitpython-on-the-nrf52/nrf52840-bootloader
- - That seems to work! End up with the dev kit showing up as a USB
-   drive called `NRF52BOOT` (on the nRF USB port, *not* the JLink
-   one!).
- - Then download the latest CircuitPython UF2 file for the PCA10056
-   board, copy it to the `NRF52BOOT` drive, and the thing reboots itself
-   and reappears as a USB drive called `CIRCUITPY`. Success!
+Then it was the usual `pip install --upgrade pip` and `pip install
+mu-editor`. The editor worked fine once it was installed.
+
+### Installing CircuitPython for nRF52840 dongle and dev kit
+
+How you install CircuitPython itself depends on the board you're
+using. I started off trying to install it on an nRF52840 dongle, which
+turned out to be a mistale. The dongle is set up with a bootloader
+that refuses to overwrite itself, and because the dongle has to be
+programmed via USB (unless you pull out your soldering iron), you
+can't get around that. CircuitPython doesn't like that. There are ways
+to work around it, but they're more involved than I wanted to get
+into.
+
+So I switched to using an nRF52840 development kit instead. There's a
+bit of preparation needed to enable the USB mass storage interface on
+the development kit (all described
+[here](https://learn.adafruit.com/circuitpython-on-the-nrf52/nrf52840-bootloader)).
+Once that's done, the development kit shows up as a USB drive called
+`NRF52BOOT` (on the nRF USB port, *not* the JLink one!). Then, you
+download the latest CircuitPython UF2 file for the PCA10056 board,
+copy it to the `NRF52BOOT` drive, and the thing reboots itself and
+reappears as a USB drive called `CIRCUITPY`. Success!
 
 Conclusion: it's fair to say that the development kit is supported,
 but not really the dongle. That's not CircuitPython's fault. It's more
@@ -45,10 +57,9 @@ performance. The only reasonable sounding description I've seen
 involves programming the dongle using the SWD pads exposed there,
 using a JLink (or a bit-banged approximation of one using OpenOCD on a
 Raspberry Pi). It doesn't seem to be possible via the dongle's USB
-port. I'll definitely try the RPi + OpenOCD approach later, once I
-want to have multiple devices, but it's a bit much.
+port.
 
-## Installation statistics
+### Installation statistics
 
 The CircuitPython distribution itself appears small (the UF2 file for
 the DK is 694K), but you have to remember that that's copied onto the
@@ -61,7 +72,7 @@ The bootloader stuff needed to set up the development kit for
 installation is about 2.5 Gb, but you only need that once to set up
 the board.
 
-# Documentation
+## Documentation
 
 There's pretty good "getting started" documentation, which is
 presumably a little easier to deal with if you have a board that's
@@ -69,34 +80,41 @@ really supported by CircuitPython.
 
 Can't say what the reference documentation is like yet. There is some!
 
-# Example 1: Blinky
+## Example 1: Blinky (`example-1.py`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-1.py)
 
 Very simple, except for needing to fossick around in the board
 definition to figure out the syntax used for the I/O pin definitions
 (the Adafruit boards all have an LED on a pin called `D17`, but LED1
 on the nRF52840 development kit is on `P0_13`).
 
-# Example 2: PWM blinky
+## Example 2: PWM blinky
 
-## Pre-defined example (`example-2a.py`)
+### Pre-defined example (`example-2a.py`)
 
-Worked first time. Taken from the "CircuitPython Essentials" tutorial
-(https://learn.adafruit.com/circuitpython-essentials/circuitpython-pwm)
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-2a.py)
 
-## Add PWM to basic blinky (`example-2b.py`)
+Worked first time. Taken from the ["CircuitPython Essentials" tutorial](https://learn.adafruit.com/circuitpython-essentials/circuitpython-pwm).
+
+### Add PWM to basic blinky (`example-2b.py`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-2b.py)
 
 Nothing much to this: there's no configuration needed, the PWM library
 is available without any drama.
 
-# Example 3: BLE-controlled PWM blinky
+## Example 3: BLE-controlled PWM blinky
 
-## Pre-defined BLE example (`example-3a.py`)
+### Pre-defined BLE example (`example-3a.py`)
 
-Following something like this example:
-https://learn.adafruit.com/bluetooth-light-switch-with-crickit-and-nrf52840/code-with-circuitpython
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-3a.py)
 
-Need some libraries: these are just copied from the library bundle
-into the `lib` directory on the `CIRCUITPY` drive. We need
+I started off by following [this
+example](https://learn.adafruit.com/bluetooth-light-switch-with-crickit-and-nrf52840/code-with-circuitpython).
+
+This needed some libraries: these are just copied from the library
+bundle into the `lib` directory on the `CIRCUITPY` drive. We need
 `adafruit_ble` and `adafruit_bluefruit_connect`.
 
 Oh wow. That was ridiculously easy. To get to an on/off LED controlled
@@ -105,7 +123,9 @@ example mentioned above, and it worked more or less first time. The
 *Bluefruit Connect* Android app is a handy little tool for playing
 with these things.
 
-## Add BLE to PWM blinky (`example-3b.py`)
+### Add BLE to PWM blinky (`example-3b.py`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-3b.py)
 
 1. Start from `example-2a.py`.
 2. Add BLE imports based on `example-3a.py`.
@@ -119,43 +139,46 @@ Works more or less first time. (The only slight wrinkle is that the
 GPIOs controlling LEDs are inverted: PWM = 0% is maximum brightness,
 PWM = 100% is off.)
 
-## Add PWM blinky to BLE example
+### Add PWM blinky to BLE example
 
 Skipping this one because it's too easy.
 
-# Example 4: something "Almost Realistic" (`example-4.py`)
+## Example 4: something "Almost Realistic" (`example-4.py`)
+
+[Link to code](https://github.com/ian-ross/nordic-tools/blob/main/circuitpython/example-4.py)
 
 The problem here is that CircuitPython doesn't support any kind of
-RTOS functionality in the Python code that you right. Modules
+RTOS functionality in the Python code that you write. Modules
 implemented in C can do whatever they like, of course, and some of the
 Adafruit-supplied libraries run background tasks. For example, the
 audio library can play samples while the main Python code does
 something else. But you can't do that sort of thing in your Python
 code.
 
-The coding model for CircuitPython seems to be an active main loop:
-`while True` check what's happened and respond to it. There's no
-concept of threads or tasks, and no easy way to deal with asynchronous
-events. That's not any kind of criticism, by the way: these things are
-hard to deal with and forcing beginners to confront them head on would
-be unfriendly, to say the least.
+The coding model for CircuitPython seems to be an Arduino-like active
+main loop: `while True` check what's happened and respond to it.
+There's no concept of threads or tasks, and no easy way to deal with
+asynchronous events. That's not any kind of criticism, by the way:
+these things are hard to deal with and forcing beginners to confront
+them head on would be unfriendly, to say the least.
 
 You *can* implement the required functionality for the "almost
 realistic" example using a simple event loop and a state machine,
 though I don't think you can do it in a low power "wait for event" way
-(there's some discussion on this issue about low power sleep on the
-nRF52840, which is not a simple thing to do, especially if you want to
-be receptive to BLE messages while you're sleeping:
-https://github.com/adafruit/circuitpython/issues/696).
+(there's some discussion on [this
+issue](https://github.com/adafruit/circuitpython/issues/696) about low
+power sleep on the nRF52840, which is not a simple thing to do,
+especially if you want to be receptive to BLE messages while you're
+sleeping).
 
 This is done in the `example-4.py` code, just to show how it works.
 It's pretty simple, but it's not really what this example is supposed
 to be demonstrating!
 
 
-# The judging criteria
+## The judging criteria
 
-## Installation
+### Installation
 
 **How easy is it to install the platform?**
 
@@ -176,7 +199,7 @@ way to mount a USB drive.
 
 Yes.
 
-## Quick start
+### Quick start
 
 **How long is "Zero To Blinky"?**
 
@@ -193,7 +216,7 @@ directly linked from the main `circuitpython.org` website.
 
 Yes. Quite amazingly so.
 
-## Documentation
+### Documentation
 
 **Is there any?**
 
@@ -218,9 +241,9 @@ There are tutorials and examples. The tutorial matieral is all right,
 and the examples are useful. There are also a lot of projects on the
 Adafruit website, many of which contain interesting stuff.
 
-## Basic workflow
+### Basic workflow
 
-### Edit
+#### Edit
 
 **Is there editor syntax support?**
 
@@ -238,7 +261,7 @@ drive promptly.
 You don't have to use anything in particular, but the recommended Mu
 editor is fine, and a good thing for beginners.
 
-### Compile
+#### Compile
 
 Most of this is irrelevant, since it's interpreted Python. I don't
 know how it is writing CircuitPython libraries that have to do native
@@ -248,28 +271,28 @@ One thing that's pretty handy is how you set up libraries: just copy
 them from the compiled CircuitPython bundle to the `lib` directory on
 the USB drive.
 
-### Flash
+#### Flash
 
 **Basically, does it work?**
 
 Yes, because all you have to do is write files to a USB drive!
 
-### Debug
+#### Debug
 
 This is also mostly irrelevant. There's no real debug support. There's
 a serial console you can write to from your Python code, but that's
 about it.
 
 
-## Fancy workflows
+### Fancy workflows
 
 None of this is relevant for CircuitPython. You can't do any of this
 kind of thing, and the platform just isn't intended for the kind of
 applications where you might be doing CI or automated testing.
 
-## Functionality
+### Functionality
 
-### Coverage of device functionality
+#### Coverage of device functionality
 
 **What device peripherals have driver libraries?**
 
@@ -294,7 +317,7 @@ It looks like it would be pretty easy to fork the main CircuitPython
 repository to modify the nRF52840 support to get access to other
 peripherals.
 
-### Configuration
+#### Configuration
 
 **How easy is it to use different libraries or drivers in your code?**
 
@@ -306,7 +329,7 @@ the setup?**
 
 No, but no need.
 
-### Libraries
+#### Libraries
 
 **Are there higher-level libraries available for common functionality
  (e.g. communications, crypto, etc.)?**
